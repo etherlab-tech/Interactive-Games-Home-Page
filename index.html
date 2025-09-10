@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=2160, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>PBK IxD — Play Now</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Gajraj+One&family=DM+Sans:wght@400;700&display=swap');
+
+    html, body {
+      margin: 0; padding: 0;
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: #000; /* letterbox like your games */
+    }
+
+    /* Fullscreen container */
+    #gameContainer{
+      position: fixed; inset: 0;
+      background: #000;
+    }
+
+    /* === 2160×3840 portrait stage (matches your games) === */
+    #stage{
+      position: absolute;
+      width: 2160px; height: 3840px;         /* DESIGN SIZE */
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      transform-origin: center center;
+      overflow: hidden;
+      isolation: isolate;
+      font-family: "DM Sans", system-ui, sans-serif;
+      background: #8b0e0e; /* fallback solid red */
+    }
+
+    /* Optional background photo with red overlay */
+    #stage::before{
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(rgba(190,0,0,0.75), rgba(190,0,0,0.75)),
+        url("./assets/BG.png") center / cover no-repeat;
+      z-index: 0;
+    }
+
+    /* Content layers */
+    .layer{ position: absolute; left: 50%; transform: translateX(-50%); z-index: 1; }
+
+    /* PBK header */
+    .logo{
+      top: 6%;
+      width: 75%;
+      max-width: 1550px;
+    }
+    .logo img{
+      width: 100%; height: auto; display: block; user-select: none;
+      filter: drop-shadow(0 8px 32px rgba(0,0,0,0.35));
+    }
+
+    /* Title */
+    .title{
+      top: 38%;
+      text-align: center;
+      color: #fff;
+      font-family: "Gajraj One", system-ui, sans-serif;
+      font-size: 250px; /* tuned for 2160×3840 */
+      letter-spacing: 0.02em;
+      text-shadow: 0 8px 40px rgba(0,0,0,0.45);
+      white-space: nowrap;
+    }
+
+    /* Button row */
+    .buttons{
+      bottom: 8%;
+      width: 1840px;              /* fixed row width inside stage */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 120px;
+      transform: translateX(-50%);
+    }
+
+    /* Buttons */
+    .btn{
+      display: flex; align-items: center; justify-content: center;
+      width: 860px;               /* exact so both fit inside row */
+      height: 240px;
+      font-weight: 700;
+      font-size: 95px;            /* ↓ updated from 110px */
+      color: #111;
+      background: #fff;
+      text-decoration: none;
+      border-radius: 120px;
+      border: 2px solid #fff;
+      box-shadow: 0 16px 60px rgba(0,0,0,0.35);
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      transition: transform 0.06s ease-in-out;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .btn:active{ transform: scale(0.98); }
+  </style>
+</head>
+<body>
+  <div id="gameContainer">
+    <div id="stage">
+      <!-- PBK IxD Header Image -->
+      <div class="layer logo" aria-hidden="true">
+        <img src="./assets/PBK-Header.png" alt="PBK IxD"><!-- your header -->
+      </div>
+
+      <!-- Title -->
+      <div class="layer title">Play Now!</div>
+
+      <!-- Buttons -->
+      <div class="layer buttons">
+        <a class="btn" href="https://etherlab-tech.github.io/matchinggame/">Matching Game</a>
+        <a class="btn" href="https://etherlab-tech.github.io/flappyplane/">Flappy Plane</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Center + scale the 2160×3840 stage to fit viewport (exactly like your games)
+    (function(){
+      const STAGE_W = 2160, STAGE_H = 3840;
+      const stage = document.getElementById('stage');
+      function fit(){
+        const vw = window.innerWidth, vh = window.innerHeight;
+        const s = Math.min(vw / STAGE_W, vh / STAGE_H);
+        stage.style.transform = `translate(-50%, -50%) scale(${s})`;
+      }
+      window.addEventListener('resize', fit, {passive:true});
+      window.addEventListener('orientationchange', fit, {passive:true});
+      fit();
+    })();
+  </script>
+</body>
+</html>
